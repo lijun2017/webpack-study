@@ -84,7 +84,7 @@ module.exports = {
   // plugins的配置
   plugins: [
     // 详细的plugins配置
-    // html-webpack-glugins
+    // html-webpack-plugin
     // 功能：默认创建一个空的HTML，自动引入打包输出的所有资源（js/css）
     // 需求：需要有结构的HTML文件
     new HtmlWebpackPlugin({

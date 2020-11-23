@@ -1,27 +1,17 @@
-/* 
-webpack.config.js   webpack的配置文件
-  作用：指示 webpack 做事，（运行 webpack 指令时，会加载里面的配置）
-
-  所有构建工具都是基于 node.js 平台运行的——模块化采用 common.js 
-*/
-
-
-/* 
-  loader: 1.  下载   2.  使用（配置loader）
-  plugins: 1.   下载  2.  引入  3.  使用
-*/
 
 const path = require('path')
+const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   // 入口起点
-  entry: './src/index.js',
+  entry: './src/js/index.js',
 
   // 输出
   output: {
     // 输出文件名
-    filename: 'built.js',
+    filename: 'js/built.js',
     // 输出路径，绝对路径
     // __dirname nodejs 的变量，当前问价的目录的绝对路径
     path: path.resolve(__dirname, 'build')
@@ -36,23 +26,14 @@ module.exports = {
         // 匹配哪些
         test: /\.css/,
         // 使用的哪些loader
-        use: [ 
-          // 创建style标签，将js中的样式资源插入进行，添加到head中生效
-          'style-loader',
-          // 将css文件变成common.js模块，里面的内容是字符串
-          'css-loader'
-        ]
-      }, {
-        // 匹配哪些
-        test: /\.less/,
-        // 使用的哪些loader
         use: [
           // 创建style标签，将js中的样式资源插入进行，添加到head中生效
-          'style-loader',
+          // 'style-loader',
+
+          // 这个loader取代style-loader. 作用：提取js中的css成单独文件
+          MiniCssExtractPlugin.loader,
           // 将css文件变成common.js模块，里面的内容是字符串
-          'css-loader',
-          // 将less文件编译成css
-          'less-loader'
+          'css-loader'
         ]
       }
     ]
@@ -67,9 +48,22 @@ module.exports = {
     new HtmlWebpackPlugin({
       // 复制'./src/index.html'文件，并自动引入打包输出的所有资源（js/css）
       template: './src/index.html'
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'css/built.css'
     })
   ],
 
   // 模式
-  mode: 'development' // development product
+  mode: 'development', // development product
+
+  // 开发服务器 devServer： 用来自动化（自动编译，自动打开浏览器，自动刷新浏览器）
+  // 特点： 只会在内存中编译打包，不会有任何输出
+  // 启动DevServer指令为： npx webpack-dev-server
+  devServer: {
+    contentBase: resolve(__dirname, 'build'),
+    compress: true, // 启动gzip压缩
+    port: 3001, // 服务器端口
+    open: true // 自动打开浏览器
+  }
 }
