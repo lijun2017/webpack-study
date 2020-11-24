@@ -1,11 +1,8 @@
-const path = require('path')
-const { resolve } = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path');
+const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-
-// 设置nodejs环境变量
-// process.env.NODE_ENV = 'development'
 
 module.exports = {
   entry: './src/js/index.js',
@@ -16,6 +13,24 @@ module.exports = {
 
   module: {
     rules: [
+      /*
+          语法检查：eslint-loader eslint
+            注意：只检查自己写的源代码，第三方的库不用检查的
+            设置检查规则：
+              packjack.json中eslintConfig中设置
+              airbnb --> eslint-config-airbnb eslint-plugin-import eslint
+
+          实际上和视频中相比已经失败了，不知道啥原因，暂时放弃eslint规范了
+       */
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          // 自动修复eslint的错误
+          fix: true,
+        },
+      },
       {
         test: /\.css/,
         use: [
@@ -55,4 +70,4 @@ module.exports = {
     port: 3001, // 服务器端口
     open: true, // 自动打开浏览器
   },
-}
+};
