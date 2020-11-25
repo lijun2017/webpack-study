@@ -63,5 +63,5 @@ module.exports = {
   ],
 
   // 模式
-  mode: 'development' // development product
+  mode: 'development' // development production
 }

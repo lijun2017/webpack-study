@@ -48,7 +48,7 @@ module.exports = {
   ],
 
   // 模式
-  mode: 'development', // development product
+  mode: 'development', // development production
   devServer: {
     contentBase: resolve(__dirname, 'build'),
     compress: true, // 启动gzip压缩
