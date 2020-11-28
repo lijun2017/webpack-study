@@ -37,7 +37,7 @@ module.exports = {
         // 匹配哪些
         test: /\.css/,
         // 使用的哪些loader
-        use: [ 
+        use: [
           // 创建style标签，将js中的样式资源插入进行，添加到head中生效
           'style-loader',
           // 将css文件变成common.js模块，里面的内容是字符串
@@ -56,6 +56,49 @@ module.exports = {
           // 将less文件编译成css
           'less-loader'
         ]
+      },
+      /* 
+        正常来说，一个文件只能被一个loader处理。
+        当一个文件要被多个loader处理，那么一定要指定loader执行的先后顺序：
+          先执行eslint，在执行babel
+      */
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        // 优先处理该loader
+        enforce: 'pre',
+        loader: 'eslint-loader',
+        options: {
+          // 自动修复eslint的错误
+          fix: true,
+        },
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          // 预设：指示babel做怎么样的兼容性处理
+          presets: [[
+            '@babel/preset-env',
+            {
+              // 按需加载
+              useBuiltIns: 'usage',
+              // 指定core-js版本
+              corejs: {
+                version: 3
+              },
+              // 指定兼容性做到哪个版本浏览器
+              targets: {
+                chrome: '60',
+                firefox: '60',
+                ie: '9',
+                safari: '10',
+                edge: '17'
+              }
+            }
+          ]]
+        }
       },
       {
         // 处理图片资源,

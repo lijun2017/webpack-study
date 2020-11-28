@@ -31,32 +31,6 @@ module.exports = {
   // loader 配置
   module: {
     rules: [
-      // 详细loader配置
-      // 不同文件必须配置不同的loader处理
-      {
-        // 匹配哪些
-        test: /\.css/,
-        // 使用的哪些loader
-        use: [
-          // 创建style标签，将js中的样式资源插入进行，添加到head中生效
-          'style-loader',
-          // 将css文件变成common.js模块，里面的内容是字符串
-          'css-loader'
-        ]
-      },
-      {
-        // 匹配哪些
-        test: /\.less/,
-        // 使用的哪些loader
-        use: [
-          // 创建style标签，将js中的样式资源插入进行，添加到head中生效
-          'style-loader',
-          // 将css文件变成common.js模块，里面的内容是字符串
-          'css-loader',
-          // 将less文件编译成css
-          'less-loader'
-        ]
-      },
       /* 
         正常来说，一个文件只能被一个loader处理。
         当一个文件要被多个loader处理，那么一定要指定loader执行的先后顺序：
@@ -74,65 +48,96 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          // 预设：指示babel做怎么样的兼容性处理
-          presets: [[
-            '@babel/preset-env',
-            {
-              // 按需加载
-              useBuiltIns: 'usage',
-              // 指定core-js版本
-              corejs: {
-                version: 3
-              },
-              // 指定兼容性做到哪个版本浏览器
-              targets: {
-                chrome: '60',
-                firefox: '60',
-                ie: '9',
-                safari: '10',
-                edge: '17'
-              }
+        oneOf: [
+          // 详细loader配置
+          // 不同文件必须配置不同的loader处理
+          {
+            // 匹配哪些
+            test: /\.css/,
+            // 使用的哪些loader
+            use: [
+              // 创建style标签，将js中的样式资源插入进行，添加到head中生效
+              'style-loader',
+              // 将css文件变成common.js模块，里面的内容是字符串
+              'css-loader'
+            ]
+          },
+          {
+            // 匹配哪些
+            test: /\.less/,
+            // 使用的哪些loader
+            use: [
+              // 创建style标签，将js中的样式资源插入进行，添加到head中生效
+              'style-loader',
+              // 将css文件变成common.js模块，里面的内容是字符串
+              'css-loader',
+              // 将less文件编译成css
+              'less-loader'
+            ]
+          },
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            options: {
+              // 预设：指示babel做怎么样的兼容性处理
+              presets: [[
+                '@babel/preset-env',
+                {
+                  // 按需加载
+                  useBuiltIns: 'usage',
+                  // 指定core-js版本
+                  corejs: {
+                    version: 3
+                  },
+                  // 指定兼容性做到哪个版本浏览器
+                  targets: {
+                    chrome: '60',
+                    firefox: '60',
+                    ie: '9',
+                    safari: '10',
+                    edge: '17'
+                  }
+                }
+              ]]
             }
-          ]]
-        }
-      },
-      {
-        // 处理图片资源,
-        // 问题：默认处理不了html中img图片
-        test: /\.(jpg|png|gif)/,
-        // 使用一个loader,下载url-loader和file-loader
-        loader: 'url-loader',
-        options: {
-          // 图片大小小于8kb，就会被base64处理
-          // 优点：减少请求数量（减轻服务器压力）
-          // 缺点：图片体积会更大（文件请求速度更慢）
-          limit: 8 * 1024,
-          // 问题，因为url-loader默认使用es6模块化解析，但是html引入图片是common.js,因此关闭es6模块化解析
-          esModule: false,
-          // 给图片进行重命名
-          // [hash:10]表示取hash值得前10位
-          // [ext]表示取源文件的扩展名
-          name: '[hash:10].[ext]',
-          outputPath: 'imgs'
-        }
-      },
-      // 打包其他资源（除了html、js、css资源以外的资源）
-      {
-        exclude: /\.(css|less|js|html|jpg|png|gif)$/,
-        // 处理html文件的img图片（负责引入img， 从而能被url-loader进行处理）
-        loader: 'file-loader',
-        options: {
-          // 给图片进行重命名
-          // [hash:10]表示取hash值得前10位
-          // [ext]表示取源文件的扩展名
-          name: '[hash:10].[ext]',
-          outputPath: 'media'
-        }
+          },
+          {
+            // 处理图片资源,
+            // 问题：默认处理不了html中img图片
+            test: /\.(jpg|png|gif)/,
+            // 使用一个loader,下载url-loader和file-loader
+            loader: 'url-loader',
+            options: {
+              // 图片大小小于8kb，就会被base64处理
+              // 优点：减少请求数量（减轻服务器压力）
+              // 缺点：图片体积会更大（文件请求速度更慢）
+              limit: 8 * 1024,
+              // 问题，因为url-loader默认使用es6模块化解析，但是html引入图片是common.js,因此关闭es6模块化解析
+              esModule: false,
+              // 给图片进行重命名
+              // [hash:10]表示取hash值得前10位
+              // [ext]表示取源文件的扩展名
+              name: '[hash:10].[ext]',
+              outputPath: 'imgs'
+            }
+          },
+          // 打包其他资源（除了html、js、css资源以外的资源）
+          {
+            exclude: /\.(css|less|js|html|jpg|png|gif)$/,
+            // 处理html文件的img图片（负责引入img， 从而能被url-loader进行处理）
+            loader: 'file-loader',
+            options: {
+              // 给图片进行重命名
+              // [hash:10]表示取hash值得前10位
+              // [ext]表示取源文件的扩展名
+              name: '[hash:10].[ext]',
+              outputPath: 'media'
+            }
+          }
+        ]
       }
+
     ]
   },
 
