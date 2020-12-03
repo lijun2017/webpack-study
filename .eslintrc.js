@@ -1,11 +1,11 @@
 module.exports = {
     root: true,
     parserOptions: {
-      sourceType: 'module',
+        sourceType: 'module',
     },
     // required to lint *.vue files
     plugins: [
-      'html'
+        'html'
     ],
     // add your custom rules here
     'rules': {
@@ -36,5 +36,8 @@ module.exports = {
         }],
         'eol-last': 'off',
         eqeqeq: 0
+    },
+    env: {
+        "browser": true
     }
-  }
+}
