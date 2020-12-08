@@ -25,59 +25,36 @@ module.exports = {
   // 入口起点
   entry: ['./src/js/index.js'],
 
-  // 输出
   output: {
-    // 输出文件名
     filename: 'js/built.[contenthash:10].js',
-    // 输出路径，绝对路径
-    // __dirname nodejs 的变量，当前问价的目录的绝对路径
     path: path.resolve(__dirname, 'build')
   },
 
-  // loader 配置
   module: {
     rules: [
-      /* 
-        正常来说，一个文件只能被一个loader处理。
-        当一个文件要被多个loader处理，那么一定要指定loader执行的先后顺序：
-          先执行eslint，在执行babel
-      */
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        // 优先处理该loader
         enforce: 'pre',
         loader: 'eslint-loader',
         options: {
-          // 自动修复eslint的错误
           fix: true,
         },
       },
       {
         oneOf: [
-          // 详细loader配置
-          // 不同文件必须配置不同的loader处理
           {
-            // 匹配哪些
             test: /\.css/,
-            // 使用的哪些loader
             use: [
-              // 这个loader取代style-loader. 作用：提取js中的css成单独文件
-          MiniCssExtractPlugin.loader,
-              // 将css文件变成common.js模块，里面的内容是字符串
+              MiniCssExtractPlugin.loader,
               'css-loader'
             ]
           },
           {
-            // 匹配哪些
             test: /\.less/,
-            // 使用的哪些loader
             use: [
-              // 这个loader取代style-loader. 作用：提取js中的css成单独文件
-          MiniCssExtractPlugin.loader,
-              // 将css文件变成common.js模块，里面的内容是字符串
+              MiniCssExtractPlugin.loader,
               'css-loader',
-              // 将less文件编译成css
               'less-loader'
             ]
           },
@@ -130,7 +107,6 @@ module.exports = {
           }
         ]
       }
-
     ]
   },
 
