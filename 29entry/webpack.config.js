@@ -19,21 +19,8 @@ module.exports = {
         有几个入口文件就形成几个chunk，输出几个bundle文件
         此时chunk的名称是key
 
-        --> 特殊用法
-         entry: {
-          // 所有文件最终只会形成一个chunk，输出出去只有一个bundle文件
-          index: ['./src/index.js', './src/count.js'],
-          // 形成一个chunk。输出一个bundle文件
-          add: './src/add.js',
-        },
-
   */
-  // entry: './src/index.js',
-  // entry: ['./src/index.js', './src/add.js'],
-  entry: {
-    index: './src/index.js',
-    add: './src/add.js',
-  },
+  entry: './index.js',
 
   output: {
     filename: 'built.js',
