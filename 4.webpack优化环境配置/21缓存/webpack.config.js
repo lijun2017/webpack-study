@@ -26,7 +26,7 @@ module.exports = {
   entry: ['./src/js/index.js'],
 
   output: {
-    filename: 'js/built.[contenthash:10].js',
+    filename: 'js/built.[chunkhash:10].js',
     path: path.resolve(__dirname, 'build')
   },
 
@@ -116,7 +116,7 @@ module.exports = {
       template: './src/index.html'
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/built.[contenthash:10].css'
+      filename: 'css/built.[chunkhash:10].css'
     })
   ],
 
