@@ -4,40 +4,20 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  /* 
-    entry: 入口起点
-      1.string --> './src/index.js'
-        单入口
-        打包形成一个chunk。输出一个bundle文件
-        此时chunk的默认名称是main
-      2.array --> ['./src/index.js', './src/add.js']
-        多入口
-        所有入口文件最终只会形成一个chunk，输出出去只有一个bundle文件。
-          --> 只有在HRM功能中让html热更新生效~
-      3.object
-        多入口
-        有几个入口文件就形成几个chunk，输出几个bundle文件
-        此时chunk的名称是key
-
-        --> 特殊用法
-         entry: {
-          // 所有文件最终只会形成一个chunk，输出出去只有一个bundle文件
-          index: ['./src/index.js', './src/count.js'],
-          // 形成一个chunk。输出一个bundle文件
-          add: './src/add.js',
-        },
-
-  */
-  // entry: './src/index.js',
-  // entry: ['./src/index.js', './src/add.js'],
-  entry: {
-    index: './src/index.js',
-    add: './src/add.js',
-  },
+  entry: './src/index.js',
 
   output: {
+    // 文件名称（指定名称+目录）
     filename: 'built.js',
-    path: path.resolve(__dirname, 'build')
+    // 输出文件目录（将来所有资源输出的公共目录）
+    path: path.resolve(__dirname, 'build'),
+    // 所有资源的引入公共路径前缀 --> 'imgs/a.jpg' --> '/imgs/a.jpg'
+    publicPath: '/',
+    chunkFilename: 'js/[name]_chunk.js', // 非入口chunk的名称
+    library: '[name]', // 整个库向外暴露的变量名
+    librartTarget: 'window' // 变量名添加到那个上 browser
+    // librartTarget: 'global' // 变量名添加到那个上 node
+    // librartTarget: 'commonjs'
   },
 
   plugins: [
